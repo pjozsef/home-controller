@@ -1,0 +1,28 @@
+apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+mainClassName = 'io.vertx.core.Launcher'
+
+run {
+    args = ['run', rootProject.ext.main_verticle,
+            "--launcher-class=$mainClassName",
+            "--redeploy=src/**/*.*",
+            "--on-redeploy=./gradlew classes"
+    ]
+}
+
+shadowJar {
+    baseName = rootProject.name
+    classifier = 'all'
+
+    manifest {
+        Attributes 'Main-Verticle': rootProject.ext.main_verticle
+    }
+    mergeServiceFiles {
+        include 'META-INF/services/io.vertx.core.spi.VerticleFactory'
+    }
+}
+
+task stage {
+    dependsOn shadowJar
+}
