@@ -39,12 +39,22 @@ class LinuxCommander extends BaseCommander {
     }
 
     @Override
+    void mute() {
+
+    }
+
+    @Override
     void volUp() {
 
     }
 
     @Override
     void volDown() {
+
+    }
+
+    @Override
+    void setVolume(int level) {
 
     }
 }

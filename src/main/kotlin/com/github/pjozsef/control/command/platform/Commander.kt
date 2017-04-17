@@ -17,7 +17,11 @@ interface Commander {
 
     fun prev()
 
+    fun mute()
+
     fun volUp()
 
     fun volDown()
+
+    fun setVolume(level: Int)
 }
