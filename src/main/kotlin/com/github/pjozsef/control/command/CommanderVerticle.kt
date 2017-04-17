@@ -18,7 +18,7 @@ class CommanderVerticle : AbstractVerticle() {
 
     val log = LoggerFactory.getLogger(this::class.java)
 
-    val commander: Commander by lazy {
+    val commander: Commander by lazy<Commander> {
         val os = OS.of(osName)
         when (os) {
             OS.WINDOWS -> WindowsCommander(os)
