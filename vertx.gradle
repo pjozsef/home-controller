@@ -3,6 +3,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 
 mainClassName = 'io.vertx.core.Launcher'
 
+// Redeploy watcher.
 run {
     args = ['run', rootProject.ext.main_verticle,
             "--launcher-class=$mainClassName",
@@ -11,18 +12,20 @@ run {
     ]
 }
 
+// Naming and packaging settings for the "shadow jar".
 shadowJar {
     baseName = rootProject.name
     classifier = 'all'
 
     manifest {
-        Attributes 'Main-Verticle': rootProject.ext.main_verticle
+        attributes 'Main-Verticle': rootProject.ext.main_verticle
     }
     mergeServiceFiles {
         include 'META-INF/services/io.vertx.core.spi.VerticleFactory'
     }
 }
 
+// Heroku relies on the 'stage' task to deploy.
 task stage {
     dependsOn shadowJar
 }

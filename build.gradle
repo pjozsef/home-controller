@@ -5,7 +5,7 @@ group 'com.github.pjozsef.control'
 
 
 buildscript {
-    ext.main_verticle = 'com.github.pjozsef.slack.emoji.tracker.DeployVerticle'
+    ext.main_verticle = 'com.github.pjozsef.control.DeployVerticle'
     ext.kotlin_version = '1.1.1'
     ext.vertx_version = '3.4.1'
 
