@@ -11,7 +11,7 @@ class UdpVerticle : AbstractVerticle() {
     override fun start(startFuture: Future<Void>) {
         val opts = DatagramSocketOptions().setBroadcast(true)
         val socket = vertx.createDatagramSocket(opts)
-        socket.listen(config().getInteger("port", 5000), "0.0.0.0", { asyncResult ->
+        socket.listen(config().getInteger("port"), "0.0.0.0", { asyncResult ->
             if (asyncResult.succeeded()) {
                 socket.handler({ packet ->
                     log.info("got: ${packet.data()}")
