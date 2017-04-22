@@ -25,6 +25,10 @@ shadowJar {
     }
 }
 
+runShadow {
+    args '-conf config.json'
+}
+
 // Heroku relies on the 'stage' task to deploy.
 task stage {
     dependsOn shadowJar

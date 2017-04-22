@@ -8,12 +8,12 @@ class WebVerticle : AbstractVerticle() {
     val log = LoggerFactory.getLogger(this::class.java)
 
     override fun start(startFuture: Future<Void>) {
-        startFuture.complete()
-        vertx.createHttpServer()
-                .requestHandler(WebRouter.create(vertx)::accept)
-                .listen(config().getInteger("port")) { result ->
+        val server = vertx.createHttpServer()
+        server.requestHandler(WebRouter.create(vertx)::accept)
+                .listen(0) { result ->
                     if (result.succeeded()) {
                         startFuture.complete()
+                        log.info("Web server listening on ${server.actualPort()}")
                     } else {
                         log.error(result.cause())
                         startFuture.fail(result.cause())

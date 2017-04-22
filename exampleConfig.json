@@ -1,4 +1,7 @@
 {
+  "udp": {
+    "port": 666
+  },
   "web": {
     "token": "secretTokenHere"
   }

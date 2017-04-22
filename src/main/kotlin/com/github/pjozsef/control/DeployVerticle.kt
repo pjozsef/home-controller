@@ -15,9 +15,12 @@ class DeployVerticle : AbstractVerticle() {
         val webFuture = Future.future<Void>()
         val commandFuture = Future.future<Void>()
 
-        vertx.deployVerticle(UdpVerticle()) { handleDeployment(it, "udp", udpFuture) }
+        val udpOptions = DeploymentOptions().setConfig(config().getJsonObject("udp"))
+        val webOptions = DeploymentOptions().setConfig(config().getJsonObject("web"))
+        log.info("Using configuration: ${config()}")
+        vertx.deployVerticle(UdpVerticle(), udpOptions) { handleDeployment(it, "udp", udpFuture) }
 
-        vertx.deployVerticle(WebVerticle()) { handleDeployment(it, "web", webFuture) }
+        vertx.deployVerticle(WebVerticle(), webOptions) { handleDeployment(it, "web", webFuture) }
 
         val commanderOptions = DeploymentOptions().setWorker(true)
         vertx.deployVerticle(CommanderVerticle(), commanderOptions) { handleDeployment(it, "commander", commandFuture) }
