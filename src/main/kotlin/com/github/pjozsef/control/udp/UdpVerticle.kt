@@ -13,10 +13,12 @@ class UdpVerticle : AbstractVerticle() {
         val socket = vertx.createDatagramSocket(opts)
         socket.listen(config().getInteger("port"), "0.0.0.0", { asyncResult ->
             if (asyncResult.succeeded()) {
+                startFuture.complete()
                 socket.handler({ packet ->
                     log.info("got: ${packet.data()}")
                 })
             } else {
+                startFuture.fail(asyncResult.cause())
                 println("Listen failed ${asyncResult.cause()}")
             }
         })
