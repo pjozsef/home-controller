@@ -18,10 +18,10 @@ class WebRouter {
     }
 
     fun create(vertx: Vertx, config: JsonObject) = Router.router(vertx).apply {
-        route("/*").handler(AuthenticationHandler(config.getString("token")))
         route("/*").handler(LoggerHandler.create())
         post("/*").handler(BodyHandler.create())
         get("/healthcheck").handler(HealthCheckHandler())
+        route("/command/*").handler(AuthenticationHandler(config.getString("token")))
         get("/command/supported").handler(SupportedCommandsHandler(vertx))
     }
 }
