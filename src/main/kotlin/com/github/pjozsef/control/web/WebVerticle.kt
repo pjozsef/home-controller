@@ -1,6 +1,6 @@
 package com.github.pjozsef.control.web
 
-import com.github.pjozsef.control.common.SharedDataKeys
+import com.github.pjozsef.control.model.SharedDataKeys
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Future
 import io.vertx.core.http.HttpServer

@@ -1,4 +1,4 @@
-package com.github.pjozsef.control.common
+package com.github.pjozsef.control.model
 
 object SharedDataKeys {
     val webInfo = "WEB_INFO"
