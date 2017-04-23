@@ -4,6 +4,7 @@ import com.github.pjozsef.control.command.platform.Commander
 import com.github.pjozsef.control.command.platform.LinuxCommander
 import com.github.pjozsef.control.command.platform.OsxCommander
 import com.github.pjozsef.control.command.platform.WindowsCommander
+import com.github.pjozsef.control.model.EventBusAddress
 import com.github.pjozsef.control.model.SharedDataKey
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Future
@@ -56,15 +57,17 @@ class CommanderVerticle : AbstractVerticle() {
     }
 
     private fun subscribeToEventBus() {
-        eb.consumer<JsonObject>("command/shutdown", handleShutdown)
-        eb.consumer<JsonObject>("command/restart", handleRestart)
-        eb.consumer<JsonObject>("command/suspend", handleSuspend)
+        eb.consumer<JsonObject>(EventBusAddress.shutdown, handleShutdown)
+        eb.consumer<JsonObject>(EventBusAddress.restart, handleRestart)
+        eb.consumer<JsonObject>(EventBusAddress.suspend, handleSuspend)
 
-        eb.consumer<JsonObject>("command/playpause", handlePlayPause)
-        eb.consumer<JsonObject>("command/next", handleNext)
-        eb.consumer<JsonObject>("command/prev", handlePrev)
-        eb.consumer<JsonObject>("command/volup", handleVolUp)
-        eb.consumer<JsonObject>("command/voldown", handleVolDown)
+        eb.consumer<JsonObject>(EventBusAddress.playPause, handlePlayPause)
+        eb.consumer<JsonObject>(EventBusAddress.next, handleNext)
+        eb.consumer<JsonObject>(EventBusAddress.prev, handlePrev)
+        eb.consumer<JsonObject>(EventBusAddress.mute, handleMute)
+        eb.consumer<JsonObject>(EventBusAddress.volUp, handleVolUp)
+        eb.consumer<JsonObject>(EventBusAddress.volDown, handleVolDown)
+        eb.consumer<JsonObject>(EventBusAddress.setVolume, handleSetVolume)
     }
 
     private val handleShutdown: (Message<JsonObject>) -> Unit = { message ->
@@ -91,11 +94,19 @@ class CommanderVerticle : AbstractVerticle() {
 
     }
 
+    private val handleMute: (Message<JsonObject>) -> Unit = { message ->
+
+    }
+
     private val handleVolUp: (Message<JsonObject>) -> Unit = { message ->
 
     }
 
     private val handleVolDown: (Message<JsonObject>) -> Unit = { message ->
+
+    }
+
+    private val handleSetVolume: (Message<JsonObject>) -> Unit = { message ->
 
     }
 
