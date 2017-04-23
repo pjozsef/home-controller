@@ -5,4 +5,7 @@ object SharedDataKey {
     val webInfoName = "WEB_INFO_NAME"
     val webInfoOS = "WEB_INFO_OS"
     val webInfoPort = "WEB_INFO_PORT"
+
+    val supportedInfo = "SUPPORTED_INFO"
+    val supportedInfoList = "SUPPORTED_INFO_LIST"
 }
