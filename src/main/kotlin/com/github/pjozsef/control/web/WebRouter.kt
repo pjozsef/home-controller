@@ -1,6 +1,7 @@
 package com.github.pjozsef.control.web
 
 import com.github.pjozsef.control.web.handler.HealthCheckHandler
+import com.github.pjozsef.control.web.handler.SupportedCommandsHandler
 import io.vertx.core.Vertx
 import io.vertx.core.logging.LoggerFactory
 import io.vertx.ext.web.Router
@@ -18,5 +19,6 @@ class WebRouter {
         route("/*").handler(LoggerHandler.create())
         post("/*").handler(BodyHandler.create())
         get("/healthcheck").handler(HealthCheckHandler())
+        get("/command/supported").handler(SupportedCommandsHandler(vertx))
     }
 }
