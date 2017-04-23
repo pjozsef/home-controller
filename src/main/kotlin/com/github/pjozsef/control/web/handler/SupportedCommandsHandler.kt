@@ -18,6 +18,11 @@ class SupportedCommandsHandler(val vertx: Vertx) : Handler<RoutingContext> {
         commands?.let {
             val response = json { "commands" to commands }
             ctx.response().end(response.toString())
+        } ?: let {
+            ctx.response()
+                    .setStatusCode(503)
+                    .setStatusMessage("Resource not yet available, come back later.")
+                    .end()
         }
     }
 }
