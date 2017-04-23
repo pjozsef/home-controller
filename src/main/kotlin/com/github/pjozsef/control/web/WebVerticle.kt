@@ -12,7 +12,7 @@ class WebVerticle : AbstractVerticle() {
 
     override fun start(startFuture: Future<Void>) {
         val server = vertx.createHttpServer()
-        server.requestHandler(WebRouter.create(vertx)::accept)
+        server.requestHandler(WebRouter.create(vertx, config())::accept)
                 .listen(0) { result ->
                     if (result.succeeded()) {
                         server.initSharedData()
