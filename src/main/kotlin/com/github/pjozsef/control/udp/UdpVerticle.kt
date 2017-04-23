@@ -1,6 +1,6 @@
 package com.github.pjozsef.control.udp
 
-import com.github.pjozsef.control.model.SharedDataKeys
+import com.github.pjozsef.control.model.SharedDataKey
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Future
 import io.vertx.core.datagram.DatagramSocketOptions
@@ -39,11 +39,11 @@ class UdpVerticle : AbstractVerticle() {
 
     private fun createReply(): String {
         val sd = vertx.sharedData()
-        val webInfo = sd.getLocalMap<String, String>(SharedDataKeys.webInfo)
+        val webInfo = sd.getLocalMap<String, String>(SharedDataKey.webInfo)
 
-        val name = webInfo.get(SharedDataKeys.webInfoName)
-        val os = webInfo.get(SharedDataKeys.webInfoOS)
-        val port = webInfo.get(SharedDataKeys.webInfoPort)
+        val name = webInfo.get(SharedDataKey.webInfoName)
+        val os = webInfo.get(SharedDataKey.webInfoOS)
+        val port = webInfo.get(SharedDataKey.webInfoPort)
 
         return "$name,$os,$port"
     }

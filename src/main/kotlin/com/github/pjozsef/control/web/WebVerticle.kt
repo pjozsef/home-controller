@@ -1,6 +1,6 @@
 package com.github.pjozsef.control.web
 
-import com.github.pjozsef.control.model.SharedDataKeys
+import com.github.pjozsef.control.model.SharedDataKey
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Future
 import io.vertx.core.http.HttpServer
@@ -27,10 +27,10 @@ class WebVerticle : AbstractVerticle() {
 
     private fun HttpServer.initSharedData() {
         val sd = vertx.sharedData()
-        val webInfo = sd.getLocalMap<String, String>(SharedDataKeys.webInfo)
-        webInfo.put(SharedDataKeys.webInfoName, InetAddress.getLocalHost().hostName)
-        webInfo.put(SharedDataKeys.webInfoPort, this.actualPort().toString())
-        webInfo.put(SharedDataKeys.webInfoOS, System.getProperty("os.name"))
+        val webInfo = sd.getLocalMap<String, String>(SharedDataKey.webInfo)
+        webInfo.put(SharedDataKey.webInfoName, InetAddress.getLocalHost().hostName)
+        webInfo.put(SharedDataKey.webInfoPort, this.actualPort().toString())
+        webInfo.put(SharedDataKey.webInfoOS, System.getProperty("os.name"))
         log.info("WebInfo stored in sharedData")
     }
 }
