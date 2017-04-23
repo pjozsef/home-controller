@@ -4,10 +4,12 @@ import com.github.pjozsef.control.command.platform.Commander
 import com.github.pjozsef.control.command.platform.LinuxCommander
 import com.github.pjozsef.control.command.platform.OsxCommander
 import com.github.pjozsef.control.command.platform.WindowsCommander
+import com.github.pjozsef.control.model.SharedDataKey
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Future
 import io.vertx.core.eventbus.EventBus
 import io.vertx.core.eventbus.Message
+import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.core.logging.LoggerFactory
 
@@ -34,6 +36,7 @@ class CommanderVerticle : AbstractVerticle() {
         if (os.isSupported()) {
             log.info("Running on $osName")
             subscribeToEventBus()
+            initializeSharedData()
             startFuture.complete()
         } else {
             startFuture.fail(unsupportedOS())
@@ -44,6 +47,12 @@ class CommanderVerticle : AbstractVerticle() {
         osName = System.getProperty("os.name")
         os = OS.of(osName)
         eb = vertx.eventBus()
+    }
+
+    private fun initializeSharedData() {
+        val sd = vertx.sharedData()
+        val map = sd.getLocalMap<String, JsonArray>(SharedDataKey.supportedInfo)
+        map.put(SharedDataKey.supportedInfoList, JsonArray(commander.supported))
     }
 
     private fun subscribeToEventBus() {

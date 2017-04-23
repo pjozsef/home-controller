@@ -7,6 +7,19 @@ class LinuxCommander(os: OS) : BaseCommander(os) {
 
     val log = LoggerFactory.getLogger(this::class.java)
 
+    override val supported: List<String>
+        get() = listOf(
+                "shutdown",
+                "restart",
+                "suspend",
+                "playpause",
+                "next",
+                "prev",
+                "mute",
+                "volup",
+                "voldown",
+                "setvolume")
+
     override fun shutDown() {
         exec("systemctl poweroff", log)
     }

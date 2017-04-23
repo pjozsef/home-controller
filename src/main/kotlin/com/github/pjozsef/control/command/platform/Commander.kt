@@ -5,6 +5,8 @@ import com.github.pjozsef.control.command.OS
 interface Commander {
     val platform: OS
 
+    val supported: List<String>
+
     fun shutDown()
 
     fun restart()

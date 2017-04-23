@@ -3,6 +3,10 @@ package com.github.pjozsef.control.command.platform
 import com.github.pjozsef.control.command.OS
 
 class OsxCommander(os: OS) : BaseCommander(os) {
+
+    override val supported: List<String>
+        get() = listOf()
+
     override fun shutDown() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
