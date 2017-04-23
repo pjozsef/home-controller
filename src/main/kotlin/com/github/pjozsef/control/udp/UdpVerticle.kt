@@ -42,9 +42,10 @@ class UdpVerticle : AbstractVerticle() {
         val webInfo = sd.getLocalMap<String, String>(SharedDataKey.webInfo)
 
         val name = webInfo.get(SharedDataKey.webInfoName)
+        val ip = webInfo.get(SharedDataKey.webInfoAddress)
         val os = webInfo.get(SharedDataKey.webInfoOS)
         val port = webInfo.get(SharedDataKey.webInfoPort)
 
-        return "$name,$os,$port"
+        return "$name,$ip,$os,$port"
     }
 }

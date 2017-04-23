@@ -29,6 +29,7 @@ class WebVerticle : AbstractVerticle() {
         val sd = vertx.sharedData()
         val webInfo = sd.getLocalMap<String, String>(SharedDataKey.webInfo)
         webInfo.put(SharedDataKey.webInfoName, InetAddress.getLocalHost().hostName)
+        webInfo.put(SharedDataKey.webInfoAddress, InetAddress.getLocalHost().hostAddress)
         webInfo.put(SharedDataKey.webInfoPort, this.actualPort().toString())
         webInfo.put(SharedDataKey.webInfoOS, System.getProperty("os.name"))
         log.info("WebInfo stored in sharedData")
