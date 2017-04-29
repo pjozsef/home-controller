@@ -21,42 +21,42 @@ class LinuxCommander(os: OS) : BaseCommander(os) {
                 "setvolume")
 
     override fun shutDown() {
-        exec("systemctl poweroff", log)
+        exec(arrayOf("systemctl", "poweroff"), log)
     }
 
     override fun restart() {
-        exec("systemctl reboot", log)
+        exec(arrayOf("systemctl", "reboot"), log)
     }
 
     override fun suspend() {
-        exec("systemctl suspend", log)
+        exec(arrayOf("systemctl", "suspend"), log)
     }
 
     override fun playPause() {
-        exec("xdotool key XF86AudioPlay", log)
+        exec(arrayOf("systemctl", "key", "XF86AudioPlay"), log)
     }
 
     override fun next() {
-        exec("xdotool key XF86AudioNext", log)
+        exec(arrayOf("systemctl", "key", "XF86AudioNext"), log)
     }
 
     override fun prev() {
-        exec("xdotool key XF86AudioPrev", log)
+        exec(arrayOf("systemctl", "key", "XF86AudioPrev"), log)
     }
 
     override fun mute() {
-        exec("xdotool key XF86AudioMute", log)
+        exec(arrayOf("systemctl", "key", "XF86AudioMute"), log)
     }
 
     override fun volUp() {
-        exec("xdotool key XF86AudioRaiseVolume", log)
+        exec(arrayOf("systemctl", "key", "XF86AudioRaiseVolume"), log)
     }
 
     override fun volDown() {
-        exec("xdotool key XF86AudioLowerVolume", log)
+        exec(arrayOf("systemctl", "key", "XF86AudioLowerVolume"), log)
     }
 
     override fun setVolume(level: Int) {
-        exec("amixer -c 0 sset Master,0 ${normalize(level)}%", log)
+        exec(arrayOf("amixer", "-c", "0", "sset", "Master,0", "${normalize(level)}%"), log)
     }
 }

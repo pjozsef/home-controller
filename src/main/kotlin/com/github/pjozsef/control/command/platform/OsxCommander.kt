@@ -1,6 +1,7 @@
 package com.github.pjozsef.control.command.platform
 
 import com.github.pjozsef.control.command.OS
+import com.github.pjozsef.control.command.platform.osx.OsxVolumeStatus
 import io.vertx.core.logging.LoggerFactory
 
 class OsxCommander(os: OS) : BaseCommander(os) {
@@ -21,48 +22,55 @@ class OsxCommander(os: OS) : BaseCommander(os) {
                 "setvolume")
 
     override fun shutDown() {
-        exec("osascript -e 'tell app \"System Events\" to shut down'", log)
+        exec(arrayOf("osascript", "-e", "tell app \"System Events\" to shut down"), log)
     }
 
     override fun restart() {
-        exec("osascript -e 'tell app \"System Events\" to restart'", log)
+        exec(arrayOf("osascript", "-e", "tell app \"System Events\" to restart"), log)
     }
 
     override fun suspend() {
-        exec("osascript -e 'tell app \"System Events\" to sleep'", log)
+        exec(arrayOf("osascript", "-e", "tell app \"System Events\" to sleep"), log)
     }
 
     override fun playPause() {
-        exec("osascript -e 'tell application \"Spotify\" to playpause'", log)
+        exec(arrayOf("osascript", "-e", "tell app \"Spotify\" to playpause"), log)
     }
 
     override fun next() {
-        exec("osascript -e 'tell application \"Spotify\" to next track'", log)
+        exec(arrayOf("osascript", "-e", "tell app \"Spotify\" to next track"), log)
     }
 
     override fun prev() {
-        exec("osascript -e 'tell application \"Spotify\" to previous track'", log)
+        exec(arrayOf("osascript", "-e", "tell app \"Spotify\" to previous track"), log)
     }
 
     override fun mute() {
-        exec("osascript " +
-                "-e 'set curVolume to get volume settings' " +
-                "-e 'if output muted of curVolume is false then' " +
-                "-e 'set volume with output muted' " +
-                "-e 'else' " +
-                "-e 'set volume without output muted' " +
-                "-e 'end if'", log)
+        val (out, _) = exec(arrayOf("osascript", "-e", "set curVolume to get volume settings"), log)
+        OsxVolumeStatus.of(out)?.let { (_, _, _, muted) ->
+            if (!muted) {
+                exec(arrayOf("osascript", "-e", "set volume with output muted"), log)
+            } else {
+                exec(arrayOf("osascript", "-e", "set volume without output muted"), log)
+            }
+        } ?: throw IllegalStateException("Unable to parse output: $out")
     }
 
     override fun volUp() {
-        exec("osascript -e 'set volume output volume (output volume of (get volume settings) + 10)'", log)
+        exec(arrayOf(
+                "osascript",
+                "-e",
+                "set volume output volume (output volume of (get volume settings) + 10)"), log)
     }
 
     override fun volDown() {
-        exec("osascript -e 'set volume output volume (output volume of (get volume settings) - 10)'", log)
+        exec(arrayOf(
+                "osascript",
+                "-e",
+                "set volume output volume (output volume of (get volume settings) - 10)"), log)
     }
 
     override fun setVolume(level: Int) {
-        exec("osascript -e 'set volume output volume 100'", log)
+        exec(arrayOf("osascript", "-e", "set volume output volume ${normalize(level)}"), log)
     }
 }
