@@ -6,6 +6,7 @@ import com.github.pjozsef.control.command.platform.OsxCommander
 import com.github.pjozsef.control.command.platform.WindowsCommander
 import com.github.pjozsef.control.model.EventBusAddress
 import com.github.pjozsef.control.model.SharedDataKey
+import com.github.pjozsef.control.util.json
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Future
 import io.vertx.core.eventbus.EventBus
@@ -20,6 +21,7 @@ class CommanderVerticle : AbstractVerticle() {
     lateinit var eb: EventBus
 
     val log = LoggerFactory.getLogger(this::class.java)
+    private val okJson = json { "result" to "success" }
 
     val commander: Commander by lazy<Commander> {
         val os = OS.of(osName)
@@ -71,43 +73,55 @@ class CommanderVerticle : AbstractVerticle() {
     }
 
     private val handleShutdown: (Message<JsonObject>) -> Unit = { message ->
-
+        handle(message) { commander.shutDown() }
     }
 
     private val handleRestart: (Message<JsonObject>) -> Unit = { message ->
-
+        handle(message) { commander.restart() }
     }
 
     private val handleSuspend: (Message<JsonObject>) -> Unit = { message ->
-
+        handle(message) { commander.suspend() }
     }
 
     private val handlePlayPause: (Message<JsonObject>) -> Unit = { message ->
-
+        handle(message) { commander.playPause() }
     }
 
     private val handleNext: (Message<JsonObject>) -> Unit = { message ->
-
+        handle(message) {
+            commander.next()
+        }
     }
 
     private val handlePrev: (Message<JsonObject>) -> Unit = { message ->
-
+        handle(message) { commander.prev() }
     }
 
     private val handleMute: (Message<JsonObject>) -> Unit = { message ->
-
+        handle(message) { commander.mute() }
     }
 
     private val handleVolUp: (Message<JsonObject>) -> Unit = { message ->
-
+        handle(message) { commander.volUp() }
     }
 
     private val handleVolDown: (Message<JsonObject>) -> Unit = { message ->
-
+        handle(message) { commander.volDown() }
     }
 
     private val handleSetVolume: (Message<JsonObject>) -> Unit = { message ->
+        val level = message.body().getInteger("level")
+        handle(message) { commander.setVolume(level) }
+    }
 
+    private fun handle(message: Message<JsonObject>, command: () -> Unit) {
+        try {
+            command()
+            message.reply(okJson)
+        } catch (e: Exception) {
+            message.fail(500, e.message)
+        }
     }
 
     private fun unsupportedOS() = IllegalStateException("Unsupported OS version: $osName")
