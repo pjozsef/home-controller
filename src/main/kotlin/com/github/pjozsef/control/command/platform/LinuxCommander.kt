@@ -33,27 +33,27 @@ class LinuxCommander(os: OS) : BaseCommander(os) {
     }
 
     override fun playPause() {
-        exec(arrayOf("systemctl", "key", "XF86AudioPlay"), log)
+        exec(arrayOf("xdotool", "key", "XF86AudioPlay"), log)
     }
 
     override fun next() {
-        exec(arrayOf("systemctl", "key", "XF86AudioNext"), log)
+        exec(arrayOf("xdotool", "key", "XF86AudioNext"), log)
     }
 
     override fun prev() {
-        exec(arrayOf("systemctl", "key", "XF86AudioPrev"), log)
+        exec(arrayOf("xdotool", "key", "XF86AudioPrev"), log)
     }
 
     override fun mute() {
-        exec(arrayOf("systemctl", "key", "XF86AudioMute"), log)
+        exec(arrayOf("xdotool", "key", "XF86AudioMute"), log)
     }
 
     override fun volUp() {
-        exec(arrayOf("systemctl", "key", "XF86AudioRaiseVolume"), log)
+        exec(arrayOf("xdotool", "key", "XF86AudioRaiseVolume"), log)
     }
 
     override fun volDown() {
-        exec(arrayOf("systemctl", "key", "XF86AudioLowerVolume"), log)
+        exec(arrayOf("xdotool", "key", "XF86AudioLowerVolume"), log)
     }
 
     override fun setVolume(level: Int) {
