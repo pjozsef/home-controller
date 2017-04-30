@@ -1,0 +1,23 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.hidetake:gradle-ssh-plugin:2.8.0'
+    }
+}
+
+task deployAzura(type: Exec, dependsOn: 'shadowJar') {
+    commandLine 'scp', "${project.rootDir}/build/libs/${project.name}-${version}-all.jar", 'root@pjozsef.ddns.net:~/release'
+}
+
+task updateDescriptor(type: Exec) {
+    def jarName = "${project.name}-${version}-all.jar"
+    def txtName = "homecontroller-version.txt"
+    commandLine 'bash', "-c", "echo $jarName > $txtName ; scp $txtName root@pjozsef.ddns.net:~/release"
+}
+
+deployAzura.doLast {
+    tasks.updateDescriptor.execute()
+    println "Upload finished!"
+}
