@@ -7,17 +7,20 @@ buildscript {
     }
 }
 
-task deployAzura(type: Exec, dependsOn: 'shadowJar') {
-    commandLine 'scp', "${project.rootDir}/build/libs/${project.name}-${version}-all.jar", 'root@pjozsef.ddns.net:~/release'
+task deployAzura(type: Exec) {
+    dependsOn'clean'
+    dependsOn'shadowJar'
+    tasks.shadowJar.mustRunAfter 'clean'
+    commandLine 'scp', "${project.rootDir}/build/libs/${project.name}-${version}-all.jar", DEPLOY_HOST
 }
 
-task updateDescriptor(type: Exec) {
+task updateVersionDescriptorFile(type: Exec) {
     def jarName = "${project.name}-${version}-all.jar"
     def txtName = "homecontroller-version.txt"
-    commandLine 'bash', "-c", "echo $jarName > $txtName ; scp $txtName root@pjozsef.ddns.net:~/release"
+    commandLine 'bash', "-c", "echo $jarName > $txtName ; scp $txtName $DEPLOY_HOST ; rm $txtName"
 }
 
 deployAzura.doLast {
-    tasks.updateDescriptor.execute()
+    tasks.updateVersionDescriptorFile.execute()
     println "Upload finished!"
 }
